@@ -1,0 +1,11 @@
+{
+  "name": "color-console",
+  "version": "1.0.0",
+  "description": "Like console but with colors. Changes console.log, error, info, debug and warn to use different colors and a ISO timestamp",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "author": "Johan Dahl",
+  "license": "MIT"
+}
