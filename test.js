@@ -1,5 +1,6 @@
 require('./index')
 
+
 console.log('This is console.log')
 console.info('This is console.info')
 console.debug('This is console.debug')

@@ -1,7 +1,7 @@
 {
-  "name": "color-console",
-  "version": "1.0.0",
-  "description": "Like console but with colors. Changes console.log, error, info, debug and warn to use different colors and a ISO timestamp",
+  "name": "@lu.se/console",
+  "version": "1.1.0",
+  "description": "Like console but with colors. Changes console.log, error, info, debug and warn to get an ISO timestamp, and [log-type] in some color",
   "main": "index.js",
   "scripts": {
     "test": "node test.js"
