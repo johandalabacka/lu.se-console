@@ -6,22 +6,31 @@ function nowISO9075() {
   return s.substring(0, 10) + ' ' + s.substring(11, 19)
 }
 
+const subst = /%[oOdifs]/
+
 const consoleLog = console.log
 const consoleError = console.error
 
-function consoleColored(isError, color, level, ...args) {
+function consoleColored(isError, color, level, args) {
   const consoleFunc = isError ? consoleError : consoleLog
-  const stream = isError ? process.stderr : process.stdout
-  stream.write(`\x1b[${color}m${nowISO9075()} [${level}]\x1b[0m `)
+  let timeStamp = null
+  if (args.length >= 2 && subst.test(args[0])) {
+    const formatString = args.shift()
+    timeStamp = `\x1b[${color}m${nowISO9075()} [${level}]\x1b[0m ${formatString}`
+  } else {
+    timeStamp = `\x1b[${color}m${nowISO9075()} [${level}]\x1b[0m`
+  }
   if (args.length === 1 && typeof args[0] === 'string' && args[0].startsWith('┌')) {
     // A table
-    stream.write('\n')
-  }
-  consoleFunc(...args)
+    consoleFunc(timeStamp)
+    consoleFunc(...args)
+    return
+  } 
+  consoleFunc(...[timeStamp, ...args])
 }
 
-console.log = (...args) => consoleColored(false, 29, 'log  ', ...args)
-console.error = (...args) => consoleColored(true, 31, 'error', ...args)
-console.info = (...args) => consoleColored(false, 32, 'info ', ...args)
-console.debug = (...args) => consoleColored(false, 33, 'debug', ...args)
-console.warn = (...args) => consoleColored(true, 35, 'warn ', ...args)
+console.log = (...args) => consoleColored(false, 29, 'log  ', args)
+console.error = (...args) => consoleColored(true, 31, 'error', args)
+console.info = (...args) => consoleColored(false, 32, 'info ', args)
+console.debug = (...args) => consoleColored(false, 33, 'debug', args)
+console.warn = (...args) => consoleColored(true, 35, 'warn ', args)
