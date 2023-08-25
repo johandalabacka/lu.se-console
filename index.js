@@ -11,14 +11,13 @@ const subst = /%[oOdifs]/
 const consoleLog = console.log
 const consoleError = console.error
 
-function consoleColored(isError, color, level, args) {
-  const consoleFunc = isError ? consoleError : consoleLog
+function consoleColored(consoleFunc, color, args) {
   let timeStamp = null
   if (args.length >= 2 && subst.test(args[0])) {
     const formatString = args.shift()
-    timeStamp = `\x1b[${color}m${nowISO9075()} [${level}]\x1b[0m ${formatString}`
+    timeStamp = `\x1b[${color}m${nowISO9075()}\x1b[0m ${formatString}`
   } else {
-    timeStamp = `\x1b[${color}m${nowISO9075()} [${level}]\x1b[0m`
+    timeStamp = `\x1b[${color}m${nowISO9075()}\x1b[0m`
   }
   if (args.length === 1 && typeof args[0] === 'string' && args[0].startsWith('┌')) {
     // A table
@@ -29,8 +28,8 @@ function consoleColored(isError, color, level, args) {
   consoleFunc(...[timeStamp, ...args])
 }
 
-console.log = (...args) => consoleColored(false, 29, 'log  ', args)
-console.error = (...args) => consoleColored(true, 31, 'error', args)
-console.info = (...args) => consoleColored(false, 32, 'info ', args)
-console.debug = (...args) => consoleColored(false, 33, 'debug', args)
-console.warn = (...args) => consoleColored(true, 35, 'warn ', args)
+console.log = (...args) => consoleColored(consoleLog, 29, args)
+console.error = (...args) => consoleColored(consoleError, 31, args)
+console.info = (...args) => consoleColored(consoleLog, 32, args)
+console.debug = (...args) => consoleColored(consoleLog, 33, args)
+console.warn = (...args) => consoleColored(consoleError, 35, args)
